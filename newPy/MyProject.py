@@ -3,6 +3,8 @@ from PIL import Image, ImageTk
 import messagebox as msg
 import mysql.connector as conn
 
+global addEnt
+
 
 def clearWindow():
     for widget in root.winfo_children():
@@ -11,66 +13,131 @@ def clearWindow():
 
 def userDashboard():
     clearWindow()
+    global userUsername
     frame = Frame(root, bg="#333333")
+    root.title(f"Welcome {userUsername}")
+    lbl = Label(frame, bg="#333333", fg="#0487E2", text=f"Dashboard {userUsername},", font=("celtic", 30, "bold"))
     btn = Button(frame, text="Workout programs", font=("celtic", 20), command=userProgramBtn)
-    btn2 = Button(frame, text="See your progress", font=("celtic", 20), command=userSeeProgramBtn)
-    btn3 = Button(frame, text="Enter your progress", font=("celtic", 20), command=userEnterProgramBtn)
-    btn.grid(row=0, column=0, pady=40)
-    btn2.grid(row=1, column=0, pady=40)
-    btn3.grid(row=2, column=0, pady=40)
+    btn2 = Button(frame, text="See your progress", font=("celtic", 20), command=userSeeProgressBtn)
+    btn3 = Button(frame, text="Enter your progress", font=("celtic", 20), command=userEnterProgress)
+    lbl.grid(row=0, column=0, pady=40)
+    btn.grid(row=1, column=0, pady=40)
+    btn2.grid(row=2, column=0, pady=40)
+    btn3.grid(row=3, column=0, pady=40)
 
     def goback():
         logWindow()
 
-    backBtn = Button(root, text="<-back", command=goback, font=("celtic", 15))
+    backBtn = Button(root, text="Logout", command=goback, font=("celtic", 15))
     backBtn.place(x=10, y=10)
     frame.pack(pady=100)
 
 
 def userProgramBtn():
-    adminViewBtn()
+    viewProgram()
 
 
-def userSeeProgramBtn():
-    pass
+def userSeeProgressBtn():
+    global userUsername
+    root2 = Toplevel(root, bg="#333333")
+    root2.geometry("1800x900")
+    root2.title(f"View progress - {userUsername}")
+    # import mysql.connector as conn
+    con = conn.connect(host="localhost", user="root", password="admin", database="user_progress")
+    cur = con.cursor()
+    cur.execute(f"select * from {userUsername}")
+    Label(root2, text="S.no", fg="white", bg="#333333", font=("celtic", 20)).grid(row=0, column=0)
+    Label(root2, text="Title", fg="white", bg="#333333", font=("celtic", 20)).grid(row=0, column=1)
+    Label(root2, text="Date", fg="white", bg="#333333", font=("celtic", 20)).grid(row=0, column=2)
+    Label(root2, text="Description", fg="white", bg="#333333", font=("celtic", 20)).grid(row=0, column=3)
+    Label(root2, text="Execution", fg="white", bg="#333333", font=("celtic", 20)).grid(row=0, column=4)
+    Label(root2, text="Duration", fg="white", bg="#333333", font=("celtic", 20)).grid(row=0, column=5)
+    rows = 1
+    for users in cur:
+        for j in range(len(users)):
+            Label(root2, text=users[j], fg="white", bg="#333333", font=("celtic", 20)).grid(row=rows, column=j, padx=30)
+        rows += 1
+    con.commit()
+    con.close()
+    root2.mainloop()
 
 
-def userEnterProgramBtn():
+def userEnterProgress():
     clearWindow()
-    global addEnt, addtxt, addtxt2, addEnt2
-    root.title("Add a program")
+    global userEntTtl, userEntDate, userEntDesc, userEntExec, userEntDura, userUsername
+    root.title(f"Enter your progress - {userUsername}")
     frame = Frame(root, bg="#333333")
 
     # Creating widgets
-    lbl = Label(frame, text="Enter program you want to add:", bg="#333333", fg="white", font=("celtic", 30))
+    lbl = Label(frame, text="Enter your progress:", bg="#333333", fg="white", font=("celtic", 30))
     addlbl = Label(frame, text="Title", bg="#333333", fg="white", font=("celtic", 20))
-    addEnt = Entry(frame, font=("celtic", 20))
+    userEntTtl = Entry(frame, font=("celtic", 20))
+    addlbl0 = Label(frame, text="Date", bg="#333333", fg="white", font=("celtic", 20))
+    userEntDate = Entry(frame, font=("celtic", 20))
     addlbl1 = Label(frame, text="Description", bg="#333333", fg="white", font=("celtic", 20))
-    addtxt = Text(frame, height=3, width=30, font=("celtic", 20))
+    userEntDesc = Text(frame, height=3, width=30, font=("celtic", 20))
     addlbl2 = Label(frame, text="Execution", bg="#333333", fg="white", font=("celtic", 20))
-    addtxt2 = Text(frame, height=3, width=30, font=("celtic", 20))
+    userEntExec = Text(frame, height=3, width=30, font=("celtic", 20))
     addlbl3 = Label(frame, text="Duration", bg="#333333", fg="white", font=("celtic", 20))
-    addEnt2 = Entry(frame, font=("celtic", 20))
-    btn1 = Button(frame, text="Add", bg="#0487E2", fg="white", font=("celtic", 20), command=clickedAdminAddbtn)
+    userEntDura = Entry(frame, font=("celtic", 20))
+    btn1 = Button(frame, text="Add", bg="#0487E2", fg="white", font=("celtic", 20), width=10, command=clickedUserEnterProgressBtn)
 
     # Placing widgets
     lbl.grid(row=0, column=0, columnspan=2, padx=20, pady=40)
     addlbl.grid(row=1, column=0, padx=20, pady=20)
-    addEnt.grid(row=1, column=1)
-    addlbl1.grid(row=2, column=0, padx=20, pady=40)
-    addtxt.grid(row=2, column=1)
-    addlbl2.grid(row=3, column=0, padx=20, pady=40)
-    addtxt2.grid(row=3, column=1)
-    addlbl3.grid(row=4, column=0, padx=20, pady=20)
-    addEnt2.grid(row=4, column=1)
-    btn1.grid(row=5, columnspan=2, pady=40)
+    userEntTtl.grid(row=1, column=1)
+    addlbl0.grid(row=2, column=0, padx=20, pady=20)
+    userEntDate.grid(row=2, column=1)
+    addlbl1.grid(row=3, column=0, padx=20, pady=40)
+    userEntDesc.grid(row=3, column=1)
+    addlbl2.grid(row=4, column=0, padx=20, pady=40)
+    userEntExec.grid(row=4, column=1)
+    addlbl3.grid(row=5, column=0, padx=20, pady=20)
+    userEntDura.grid(row=5, column=1)
+    btn1.grid(row=6, columnspan=2, pady=40)
 
     def goback():
-        adminOperations()
+        userDashboard()
 
     backBtn = Button(root, text="<-back", command=goback, font=("celtic", 15))
     backBtn.place(x=10, y=10)
     frame.pack(pady=50)
+
+
+def clickedUserEnterProgressBtn():
+    global userEntTtl, userEntDate, userEntDesc, userEntExec, userEntDura, userUsername
+    userEntTtl1 = userEntTtl.get()
+    userEntDate1 = userEntDate.get()
+    userEntDesc1 = userEntDesc.get("1.0", "end-1c")
+    userEntExec1 = userEntExec.get("1.0", "end-1c")
+    userEntDura1 = userEntDura.get()
+
+    if userEntTtl1 == "":
+        msg.showinfo("Empty field", "Enter title")
+    elif userEntDate1 == "":
+        msg.showinfo("Empty field", "Enter date")
+    elif userEntDesc1 == "":
+        msg.showinfo("Empty field", "Enter description")
+    elif userEntExec1 == "":
+        msg.showinfo("Empty field", "Enter execution")
+    elif userEntDura1 == "":
+        msg.showinfo("Empty field", "Enter duration")
+    else:
+        # import mysql.connector as conn
+        con = conn.connect(host="localhost", user="root", password="admin", database="user_progress")
+        cur = con.cursor()
+        query = f"INSERT INTO {userUsername}(title, date, description, execution, duration) VALUES (%s, %s, %s, %s, %s)"
+        values = (userEntTtl1, userEntDate1, userEntDesc1, userEntExec1, userEntDura1)
+        cur.execute(query, values)
+
+        con.commit()
+        con.close()
+        msg.showinfo("Success", "Data stored successfully")
+        userEntTtl.delete(0, END)
+        userEntDate.delete(0, END)
+        userEntDesc.delete("1.0", END)
+        userEntExec.delete("1.0", END)
+        userEntDura.delete(0, END)
 
 
 def logWindow():
@@ -120,9 +187,9 @@ def logWindow():
 
 
 def clickedLoginBtn():
-    global logUser, logPass
+    global logUser, logPass, userUsername
 
-    user11 = logUser.get()
+    userUsername = logUser.get()
     pass1 = logPass.get()
 
     if logUser.get() == "":
@@ -135,7 +202,7 @@ def clickedLoginBtn():
         cur = con.cursor()
 
         query = "select * from user_data where username = %s and password = %s"
-        cur.execute(query, (user11, pass1))
+        cur.execute(query, (userUsername, pass1))
 
         if cur.fetchone():
             print("Login successful")
@@ -182,6 +249,7 @@ def clickedSignupBtn():
 
         print("User added successfully")
         msg.showinfo("Success", "Signed up successfully")
+        logWindow()
 
 
 def signWindow():
@@ -251,7 +319,8 @@ def adminLogWindow():
     lbl2 = Label(frame, text="Password", fg="white", bg="#333333", font=("celtic", 20))
     logPass = Entry(frame, font=("celtic", 20), show="*")
     chkVar = IntVar()
-    chk = Checkbutton(frame, text="Show password", bg="#333333", fg="white", variable=chkVar, font=("celtic", 20), command=showPassword,
+    chk = Checkbutton(frame, text="Show password", bg="#333333", fg="white", variable=chkVar, font=("celtic", 20),
+                      command=showPassword,
                       activeforeground="white", activebackground="#333333")
     btn = Button(frame, text="Login", fg="white", bg="#0487E2", width=15, command=clickedAdminLoginBtn,
                  font=("celtic", 20))
@@ -306,9 +375,11 @@ def adminDashboard():
     root.title("Admin dashboard")
     frame = Frame(root, bg="#333333")
 
+    lbl = Label(frame, text="Admin dashboard", bg="#333333", fg="#0487E2", font=("celtic", 30, "bold"))
     btn = Button(frame, text="Program options", command=adminOperations, font=("celtic", 20))
     btn2 = Button(frame, text="View members", command=viewMemberBtn, font=("celtic", 20))
     btn3 = Button(frame, text="View member analytics", command=viewUserAnalyticBtn, font=("celtic", 20))
+    lbl.grid(row=0, column=0, pady=30)
     btn.grid(row=1, column=0, padx=10, pady=40)
     btn2.grid(row=2, column=0, padx=10, pady=40)
     btn3.grid(row=3, column=0, padx=10, pady=40)
@@ -318,7 +389,7 @@ def adminDashboard():
 
     backBtn = Button(root, text="<-Log out", command=goback, font=("celtic", 15))
     backBtn.place(x=10, y=10)
-    frame.pack(pady=150)
+    frame.pack(pady=100)
 
 
 def viewMemberBtn():
@@ -338,7 +409,7 @@ def viewMemberBtn():
     rows = 1
     for users in cur:
         for j in range(len(users)):
-            Label(root2, text=users[j], fg="white", bg="#333333", font=("celtic", 20)).grid(row=rows, column=j)
+            Label(root2, text=users[j], fg="white", bg="#333333", font=("celtic", 20)).grid(row=rows, column=j, padx=30)
         rows += 1
     con.commit()
     con.close()
@@ -368,6 +439,10 @@ def adminOperations():
 
 
 def adminViewBtn():
+    viewProgram()
+
+
+def viewProgram():
     root2 = Toplevel(root, bg="#333333")
     root2.geometry("1800x900")
     root2.title("Programs list")
@@ -383,7 +458,7 @@ def adminViewBtn():
     rows = 1
     for users in cur:
         for j in range(len(users)):
-            Label(root2, text=users[j], fg="white", bg="#333333", font=("celtic", 20)).grid(row=rows, column=j)
+            Label(root2, text=users[j], fg="white", bg="#333333", font=("celtic", 18)).grid(row=rows, column=j, padx=30)
         rows += 1
     con.commit()
     con.close()
@@ -406,7 +481,7 @@ def adminAddBtn():
     addtxt2 = Text(frame, height=3, width=30, font=("celtic", 20))
     addlbl3 = Label(frame, text="Duration", bg="#333333", fg="white", font=("celtic", 20))
     addEnt2 = Entry(frame, font=("celtic", 20))
-    btn1 = Button(frame, text="Add", bg="#0487E2", fg="white", font=("celtic", 20), command=clickedAdminAddbtn)
+    btn1 = Button(frame, text="Add", bg="#0487E2", fg="white", font=("celtic", 20), width=10, command=clickedAdminAddbtn)
 
     # Placing widgets
     lbl.grid(row=0, column=0, columnspan=2, padx=20, pady=40)
@@ -429,6 +504,8 @@ def adminAddBtn():
 
 
 def clickedAdminAddbtn():
+    global addEnt, addtxt, addtxt2, addEnt2
+
     addEnt_1 = addEnt.get()
     addtxt_1 = addtxt.get("1.0", "end-1c")  # Retrieves text without the trailing newline character
     addtxt2_1 = addtxt2.get("1.0", "end-1c")  # Same here
@@ -452,7 +529,7 @@ def clickedAdminAddbtn():
 
         con.commit()
         con.close()
-        msg.showinfo("Success", "Data stored in database successfully")
+        msg.showinfo("Success", "Data stored successfully")
         addEnt.delete(0, END)
         addtxt.delete(1.0, END)
         addtxt2.delete(1.0, END)
@@ -468,7 +545,7 @@ def adminDeleteBtn():
     global delEnt
 
     frame = Frame(root, bg="#333333")
-    lbl = Label(frame, text="Enter serial no. that you want to delete:",bg="#333333", fg="white", font=("celtic", 20))
+    lbl = Label(frame, text="Enter serial no. that you want to delete:", bg="#333333", fg="white", font=("celtic", 30))
     delEnt = Entry(frame, font=("celtic", 20))
     btn = Button(frame, text="Delete", bg="#0487E2", fg="white", font=("celtic", 20), command=clickedAdminDeleteBtn)
     lbl.grid(row=1, column=1, pady=40)
@@ -537,7 +614,7 @@ def quitBtn1():
 
 
 root = Tk()
-root.geometry("1960x1080")
+# root.geometry("1960x1080")
 root.attributes("-fullscreen", True)
 root.title("Welcome")
 root.config(bg="#333333")
@@ -574,9 +651,9 @@ def mainWin():
     frame.pack()
 
 
-# mainWin()
+mainWin()
 # adminLogWindow()
-adminDashboard()
+# adminDashboard()
 # adminAddBtn()
 # signWindow()
 # adminOperations()
@@ -584,6 +661,7 @@ adminDashboard()
 # userLoggedIn()
 # viewMemberBtn()
 # adminDeleteBtn()
+# userEnterProgress()
 root.mainloop()
 
 # insert into program_data(title,description,execute,duration) values("Biceps","Barbell curl, Dumbell curl, Hammer curl","3 set of 10 reps, 3 set of 10 reps,  3 set of 10 reps","30min");
