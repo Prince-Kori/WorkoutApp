@@ -78,8 +78,7 @@ def userEnterProgress():
     userEntExec = Text(frame, height=3, width=30, font=("celtic", 20))
     addlbl3 = Label(frame, text="Duration", bg="#333333", fg="white", font=("celtic", 20))
     userEntDura = Entry(frame, font=("celtic", 20))
-    btn1 = Button(frame, text="Add", bg="#0487E2", fg="white", font=("celtic", 20), width=10,
-                  command=clickedUserEnterProgressBtn)
+    btn1 = Button(frame, text="Add", bg="#0487E2", fg="white", font=("celtic", 20), width=10, command=clickedUserEnterProgressBtn)
 
     # Placing widgets
     lbl.grid(row=0, column=0, columnspan=2, padx=20, pady=40)
@@ -246,8 +245,7 @@ def clickedSignupBtn():
 
         con = conn.connect(host="localhost", user="root", password="admin", database="user_progress")
         cur = con.cursor()
-        cur.execute(
-            f"create table {user12}(id int auto_increment primary key, title varchar(50), date varchar(50), description varchar(200), execution varchar(200), duration varchar(20))")
+        cur.execute(f"create table {user12}(id int auto_increment primary key, title varchar(50), date varchar(50), description varchar(200), execution varchar(200), duration varchar(20))")
         con.commit()
         con.close()
 
@@ -485,8 +483,7 @@ def adminAddBtn():
     addtxt2 = Text(frame, height=3, width=30, font=("celtic", 20))
     addlbl3 = Label(frame, text="Duration", bg="#333333", fg="white", font=("celtic", 20))
     addEnt2 = Entry(frame, font=("celtic", 20))
-    btn1 = Button(frame, text="Add", bg="#0487E2", fg="white", font=("celtic", 20), width=10,
-                  command=clickedAdminAddbtn)
+    btn1 = Button(frame, text="Add", bg="#0487E2", fg="white", font=("celtic", 20), width=10, command=clickedAdminAddbtn)
 
     # Placing widgets
     lbl.grid(row=0, column=0, columnspan=2, padx=20, pady=40)
@@ -543,77 +540,79 @@ def clickedAdminAddbtn():
 
 def adminUpdateBtn():
     clearWindow()
-    global program_id_entry, title_entry, description_text, execution_text, duration_entry
-    root.title("Update Program")
+    global addEnt01, addtxt01, addtxt201, addEnt201, addEntSr
+    root.title("Update a program")
     frame = Frame(root, bg="#333333")
 
     # Creating widgets
-    program_label = Label(frame, text="Enter program ID you want to update:", bg="#333333", fg="white",
-                          font=("celtic", 30))
-    program_id_label = Label(frame, text="S.no", bg="#333333", fg="white", font=("celtic", 20))
-    program_id_entry = Entry(frame, font=("celtic", 20))
-    title_label = Label(frame, text="Title", bg="#333333", fg="white", font=("celtic", 20))
-    title_entry = Entry(frame, font=("celtic", 20))
-    description_label = Label(frame, text="Description", bg="#333333", fg="white", font=("celtic", 20))
-    description_text = Text(frame, height=3, width=30, font=("celtic", 20))
-    execution_label = Label(frame, text="Execution", bg="#333333", fg="white", font=("celtic", 20))
-    execution_text = Text(frame, height=3, width=30, font=("celtic", 20))
-    duration_label = Label(frame, text="Duration", bg="#333333", fg="white", font=("celtic", 20))
-    duration_entry = Entry(frame, font=("celtic", 20))
-    update_button = Button(frame, text="Update", bg="#0487E2", fg="white", font=("celtic", 20), width=10,
-                           command=clickedAdminUpdateButton)
+    lbl = Label(frame, text="Enter program you want to update:", bg="#333333", fg="white", font=("celtic", 30))
+    addlbl0 = Label(frame, text="Title", bg="#333333", fg="white", font=("celtic", 20))
+    addEntSr = Entry(frame, font=("celtic", 20))
+    addlbl = Label(frame, text="Title", bg="#333333", fg="white", font=("celtic", 20))
+    addEnt01 = Entry(frame, font=("celtic", 20))
+    addlbl1 = Label(frame, text="Description", bg="#333333", fg="white", font=("celtic", 20))
+    addtxt01 = Text(frame, height=3, width=30, font=("celtic", 20))
+    addlbl2 = Label(frame, text="Execution", bg="#333333", fg="white", font=("celtic", 20))
+    addtxt201 = Text(frame, height=3, width=30, font=("celtic", 20))
+    addlbl3 = Label(frame, text="Duration", bg="#333333", fg="white", font=("celtic", 20))
+    addEnt201 = Entry(frame, font=("celtic", 20))
+    btn1 = Button(frame, text="Add", bg="#0487E2", fg="white", font=("celtic", 20), width=10,
+                  command=clickedAdminUpdateBtn)
 
     # Placing widgets
-    program_label.grid(row=0, column=0, columnspan=2, padx=20, pady=40)
-    program_id_label.grid(row=1, column=0, padx=20, pady=40)
-    program_id_entry.grid(row=1, column=1)
-    title_label.grid(row=2, column=0, padx=20, pady=20)
-    title_entry.grid(row=2, column=1)
-    description_label.grid(row=3, column=0, padx=20, pady=40)
-    description_text.grid(row=3, column=1)
-    execution_label.grid(row=4, column=0, padx=20, pady=40)
-    execution_text.grid(row=4, column=1)
-    duration_label.grid(row=5, column=0, padx=20, pady=20)
-    duration_entry.grid(row=5, column=1)
-    update_button.grid(row=6, columnspan=2, pady=40)
+    lbl.grid(row=0, column=0, columnspan=2, padx=20, pady=40)
+    addlbl0.grid(row=1, column=0, columnspan=2, padx=20, pady=40)
+    addEntSr.grid(row=1, column=0, columnspan=2, padx=20, pady=40)
+    addlbl.grid(row=2, column=0, padx=20, pady=20)
+    addEnt01.grid(row=2, column=1)
+    addlbl1.grid(row=3, column=0, padx=20, pady=40)
+    addtxt01.grid(row=3, column=1)
+    addlbl2.grid(row=4, column=0, padx=20, pady=40)
+    addtxt201.grid(row=4, column=1)
+    addlbl3.grid(row=5, column=0, padx=20, pady=20)
+    addEnt201.grid(row=5, column=1)
+    btn1.grid(row=6, columnspan=2, pady=40)
 
-    def go_back():
+    def goback():
         adminOperations()
 
-    back_button = Button(root, text="<-back", command=go_back, font=("celtic", 15))
-    back_button.place(x=10, y=10)
+    backBtn = Button(root, text="<-back", command=goback, font=("celtic", 15))
+    backBtn.place(x=10, y=10)
     frame.pack(pady=50)
 
 
-def clickedAdminUpdateButton():
-    global program_id_entry, title_entry, description_text, execution_text, duration_entry
-    program_id = program_id_entry.get()
-    title = title_entry.get()
-    description = description_text.get("1.0", "end-1c")
-    execution = execution_text.get("1.0", "end-1c")
-    duration = duration_entry.get()
+def clickedAdminUpdateBtn():
+    global addEnt01, addtxt01, addtxt201, addEnt201, addEntSr
+    addEntSr_1 = addEntSr.get()
+    addEnt_1 = addEnt01.get()
+    addtxt_1 = addtxt01.get("1.0", "end-1c")  # Retrieves text without the trailing newline character
+    addtxt2_1 = addtxt201.get("1.0", "end-1c")  # Same here
+    addEnt2_1 = addEnt201.get()
 
-    if program_id == "":
-        msg.showinfo("Empty field", "Enter serial number")
-    elif title or description or execution or duration == "":
-        msg.showinfo("Empty field", "Enter something to update")
+    if addEnt_1 == "":
+        msg.showinfo("Empty field", "Enter title")
+    elif addtxt_1 == "":
+        msg.showinfo("Empty field", "Enter description")
+    elif addtxt2_1 == "":
+        msg.showinfo("Empty field", "Enter execution")
+    elif addEnt2_1 == "":
+        msg.showinfo("Empty field", "Enter duration")
     else:
-        # Connect to database
+        # import mysql.connector as conn
         con = conn.connect(host="localhost", user="root", password="admin", database="user_db")
         cur = con.cursor()
 
         query = "UPDATE program_data SET title = %s, description = %s, execution = %s, duration = %s WHERE id = %s"
-        values = (title, description, execution, duration, program_id)
+        values = (addEnt_1, addtxt_1, addtxt2_1, addEnt2_1, addEntSr_1)
         cur.execute(query, values)
 
         con.commit()
         con.close()
         msg.showinfo("Success", "Data updated successfully")
-        program_id_entry.delete(0, END)
-        title_entry.delete(0, END)
-        description_text.delete(1.0, END)
-        execution_text.delete(1.0, END)
-        duration_entry.delete(0, END)
+        addEnt.delete(0, END)
+        addtxt.delete(1.0, END)
+        addtxt2.delete(1.0, END)
+        addEnt2.delete(0, END)
 
 
 def adminDeleteBtn():
@@ -652,50 +651,7 @@ def clickedAdminDeleteBtn():
 
 
 def viewUserAnalyticBtn():
-    clearWindow()
-    global userEntAna
-
-    frame = Frame(root, bg="#333333")
-    lbl = Label(frame, text="Enter username", bg="#333333", fg="white", font=("celtic", 30))
-    userEntAna = Entry(frame, font=("celtic", 20))
-    btn = Button(frame, text="Get analytics", bg="#0487E2", fg="white", font=("celtic", 20),
-                 command=clickedViewUserAnalyticBtn)
-    lbl.grid(row=1, column=1, pady=40)
-    userEntAna.grid(row=2, column=1, pady=40)
-    btn.grid(row=3, column=1, pady=40)
-
-    def goback():
-        adminOperations()
-
-    backBtn = Button(root, text="<-back", command=goback, font=("celtic", 15))
-    backBtn.place(x=10, y=10)
-    frame.pack(pady=150)
-
-
-def clickedViewUserAnalyticBtn():
-    global userEntAna
-    root2 = Toplevel(root, bg="#333333")
-    root2.geometry("1800x900")
-    root2.title("Programs list")
-    userEntAna1 = userEntAna.get()
-    # import mysql.connector as conn
-    con = conn.connect(host="localhost", user="root", password="admin", database="user_progress")
-    cur = con.cursor()
-    cur.execute(f"select * from {userEntAna1}")
-    Label(root2, text="S.no", fg="white", bg="#333333", font=("celtic", 20)).grid(row=0, column=0)
-    Label(root2, text="Title", fg="white", bg="#333333", font=("celtic", 20)).grid(row=0, column=1)
-    Label(root2, text="Date", fg="white", bg="#333333", font=("celtic", 20)).grid(row=0, column=2)
-    Label(root2, text="Description", fg="white", bg="#333333", font=("celtic", 20)).grid(row=0, column=3)
-    Label(root2, text="Execution", fg="white", bg="#333333", font=("celtic", 20)).grid(row=0, column=4)
-    Label(root2, text="Duration", fg="white", bg="#333333", font=("celtic", 20)).grid(row=0, column=5)
-    rows = 1
-    for users in cur:
-        for j in range(len(users)):
-            Label(root2, text=users[j], fg="white", bg="#333333", font=("celtic", 18)).grid(row=rows, column=j, padx=30)
-        rows += 1
-    con.commit()
-    con.close()
-    root2.mainloop()
+    pass
 
 
 def userLoginSignup():
